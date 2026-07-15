@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, X, Sparkles, ChevronDown } from 'lucide-react'
+import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs'
 
 const links = [
   { name: 'Features', href: '/features' },
@@ -21,8 +22,11 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [dropdown, setDropdown] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const { isSignedIn, isLoaded } = useUser()
 
   useEffect(() => {
+    setMounted(true)
     const fn = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', fn)
     return () => window.removeEventListener('scroll', fn)
@@ -92,12 +96,34 @@ export default function Navbar() {
           </div>
 
           <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Link href="/login" style={{ color: '#9d9dff', textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>
-              Log In
-            </Link>
-            <Link href="/signup" className="btn-primary" style={{ fontSize: 14, padding: '10px 20px' }}>
-              Get Started Free
-            </Link>
+            {mounted && isLoaded ? (
+              isSignedIn ? (
+                <>
+                  <Link href="/generate" className="btn-secondary" style={{ fontSize: 14, padding: '8px 16px' }}>
+                    Dashboard
+                  </Link>
+                  <UserButton 
+                    afterSignOutUrl="/"
+                    appearance={{
+                      elements: {
+                        avatarBox: { width: 38, height: 38 }
+                      }
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <Link href="/login" style={{ color: '#9d9dff', textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>
+                    Log In
+                  </Link>
+                  <Link href="/signup" className="btn-primary" style={{ fontSize: 14, padding: '10px 20px' }}>
+                    Get Started Free
+                  </Link>
+                </>
+              )
+            ) : (
+              <div style={{ width: 200, height: 40 }} />
+            )}
           </div>
 
           <button onClick={() => setOpen(!open)} className="show-mobile" style={{
@@ -120,8 +146,19 @@ export default function Navbar() {
               </Link>
             ))}
             <div style={{ paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)', marginTop: 8, display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <Link href="/login" onClick={() => setOpen(false)} className="btn-secondary" style={{ textAlign: 'center' }}>Log In</Link>
-              <Link href="/signup" onClick={() => setOpen(false)} className="btn-primary" style={{ textAlign: 'center' }}>Get Started Free</Link>
+              {mounted && isLoaded && (
+                isSignedIn ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px' }}>
+                    <UserButton afterSignOutUrl="/" />
+                    <span style={{ color: '#9d9dff', fontSize: 14 }}>My Account</span>
+                  </div>
+                ) : (
+                  <>
+                    <Link href="/login" onClick={() => setOpen(false)} className="btn-secondary" style={{ textAlign: 'center' }}>Log In</Link>
+                    <Link href="/signup" onClick={() => setOpen(false)} className="btn-primary" style={{ textAlign: 'center' }}>Get Started Free</Link>
+                  </>
+                )
+              )}
             </div>
           </div>
         </div>
