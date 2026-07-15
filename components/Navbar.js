@@ -1,9 +1,9 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, X, Sparkles, ChevronDown } from 'lucide-react'
-import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs'
+import { UserButton, useUser } from '@clerk/nextjs'
 
 const links = [
   { name: 'Features', href: '/features' },
@@ -53,7 +53,7 @@ export default function Navbar() {
               <Sparkles size={20} color="white" />
             </div>
             <span style={{ fontSize: 20, fontWeight: 800, color: 'white' }}>
-              Vid<span className="gradient-text">AI</span>
+              Img<span className="gradient-text">AI</span>
             </span>
           </Link>
 
@@ -102,23 +102,12 @@ export default function Navbar() {
                   <Link href="/generate" className="btn-secondary" style={{ fontSize: 14, padding: '8px 16px' }}>
                     Dashboard
                   </Link>
-                  <UserButton 
-                    afterSignOutUrl="/"
-                    appearance={{
-                      elements: {
-                        avatarBox: { width: 38, height: 38 }
-                      }
-                    }}
-                  />
+                  <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: { width: 38, height: 38 } } }} />
                 </>
               ) : (
                 <>
-                  <Link href="/login" style={{ color: '#9d9dff', textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>
-                    Log In
-                  </Link>
-                  <Link href="/signup" className="btn-primary" style={{ fontSize: 14, padding: '10px 20px' }}>
-                    Get Started Free
-                  </Link>
+                  <Link href="/login" style={{ color: '#9d9dff', textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>Log In</Link>
+                  <Link href="/signup" className="btn-primary" style={{ fontSize: 14, padding: '10px 20px' }}>Get Started Free</Link>
                 </>
               )
             ) : (

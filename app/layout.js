@@ -1,4 +1,4 @@
-import { Inter } from 'next/font/google'
+﻿import { Inter } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import Navbar from '@/components/Navbar'
@@ -7,8 +7,8 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'VidAI — AI Video Generator',
-  description: 'Transform your ideas into stunning videos using cutting-edge AI.',
+  title: 'ImgAI - AI Image Generator | Create Stunning Visuals Instantly',
+  description: 'Transform your ideas into stunning AI-generated images in seconds. 100% free unlimited AI generation!',
 }
 
 export default function RootLayout({ children }) {
