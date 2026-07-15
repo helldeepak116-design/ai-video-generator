@@ -1,4 +1,4 @@
-import PricingCard from '@/components/PricingCard'
+﻿import PricingCard from '@/components/PricingCard'
 import CTASection from '@/components/CTASection'
 import SectionHeader from '@/components/SectionHeader'
 import { Check, X } from 'lucide-react'
@@ -7,45 +7,44 @@ const PLANS = [
   {
     name: 'FREE',
     price: '0',
-    description: 'Try VidAI risk-free',
-    features: ['5 videos/month', '720p resolution', 'Up to 15 seconds', '3 art styles', 'Community support', 'VidAI watermark'],
+    description: 'Try ImgAI risk-free',
+    features: ['Unlimited images', 'HD resolution', 'All art styles', 'Basic support', 'Personal use only', 'ImgAI watermark'],
     cta: 'Start Free',
   },
   {
     name: 'PRO',
-    price: '29',
+    price: '19',
     period: 'mo',
     description: 'For serious creators',
     popular: true,
-    features: ['100 videos/month', 'Full HD 1080p', 'Up to 2 minutes', 'All 50+ art styles', 'AI music & voice', 'No watermark', 'Priority support', 'Commercial license', 'Batch export'],
+    features: ['Unlimited images', 'Ultra HD resolution', 'All 50+ art styles', 'AI enhancement tools', 'No watermark', 'Priority support', 'Commercial license', 'Batch export'],
     cta: 'Start 7-Day Free Trial',
   },
   {
     name: 'BUSINESS',
-    price: '99',
+    price: '49',
     period: 'mo',
     description: 'For teams & agencies',
-    features: ['Unlimited videos', '4K resolution', 'Up to 10 minutes', 'Custom styles', 'Full AI suite', 'No watermark', 'API access', 'Batch processing', '24/7 support', 'Team collaboration', 'Analytics dashboard'],
+    features: ['Unlimited images', '4K resolution', 'Custom styles', 'Full AI suite', 'No watermark', 'API access', 'Batch processing', '24/7 support', 'Team collaboration', 'Analytics dashboard'],
     cta: 'Start Business Trial',
   },
   {
     name: 'ENTERPRISE',
-    price: '499',
+    price: '299',
     period: 'mo',
     description: 'For large organizations',
-    features: ['Everything in Business', 'Custom AI model training', 'Dedicated GPU instances', 'White-label solution', 'SLA guarantee', 'Dedicated account manager', 'Custom integrations', 'SSO / SAML', 'On-premise option', 'Advanced security'],
+    features: ['Everything in Business', 'Custom AI model training', 'Dedicated infrastructure', 'White-label solution', 'SLA guarantee', 'Dedicated account manager', 'Custom integrations', 'SSO / SAML', 'On-premise option', 'Advanced security'],
     cta: 'Contact Sales',
     href: '/contact',
   },
 ]
 
 const COMPARISON = [
-  { feature: 'Videos per month', free: '5', pro: '100', biz: '∞', ent: '∞' },
-  { feature: 'Max resolution', free: '720p', pro: '1080p', biz: '4K', ent: '4K+' },
-  { feature: 'Max duration', free: '15s', pro: '2 min', biz: '10 min', ent: 'Custom' },
-  { feature: 'Art styles', free: '3', pro: '50+', biz: '50+ Custom', ent: 'Unlimited' },
-  { feature: 'AI Music', free: false, pro: true, biz: true, ent: true },
-  { feature: 'AI Voiceover', free: false, pro: true, biz: true, ent: true },
+  { feature: 'Images per month', free: 'Unlimited', pro: 'Unlimited', biz: 'Unlimited', ent: 'Unlimited' },
+  { feature: 'Max resolution', free: 'HD', pro: 'Ultra HD', biz: '4K', ent: '4K+' },
+  { feature: 'Art styles', free: '10', pro: '50+', biz: '50+ Custom', ent: 'Unlimited' },
+  { feature: 'AI Enhancement', free: false, pro: true, biz: true, ent: true },
+  { feature: 'AI Editor', free: false, pro: true, biz: true, ent: true },
   { feature: 'API Access', free: false, pro: false, biz: true, ent: true },
   { feature: 'Batch Processing', free: false, pro: false, biz: true, ent: true },
   { feature: 'Commercial License', free: false, pro: true, biz: true, ent: true },
@@ -56,25 +55,22 @@ const COMPARISON = [
 export default function PricingPage() {
   return (
     <div style={{ paddingTop: 80 }}>
-      {/* Header */}
       <section style={{ padding: '5rem 1.5rem 3rem', position: 'relative', overflow: 'hidden' }}>
         <div className="orb-purple" style={{ top: 0, left: '30%' }} />
         <SectionHeader
-          badge="💰 Simple Pricing"
+          badge="Simple Pricing"
           title="Transparent"
           highlight="Pricing"
           subtitle="Choose your plan. All paid plans include a 7-day free trial. No surprises."
         />
       </section>
 
-      {/* Plans */}
       <section style={{ padding: '0 1.5rem 5rem' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
           {PLANS.map((p, i) => <PricingCard key={i} {...p} />)}
         </div>
       </section>
 
-      {/* Comparison Table */}
       <section style={{ padding: '0 1.5rem 5rem' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <h2 style={{ fontSize: 28, fontWeight: 800, color: 'white', textAlign: 'center', marginBottom: 32 }}>
@@ -116,7 +112,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* FAQ Teaser */}
       <section style={{ padding: '0 1.5rem 5rem', textAlign: 'center' }}>
         <p style={{ color: '#6d6d8a', marginBottom: 16 }}>Have pricing questions?</p>
         <a href="/faq" style={{ color: '#9d9dff', textDecoration: 'none', fontWeight: 600, fontSize: 15 }}>

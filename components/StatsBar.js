@@ -1,8 +1,8 @@
-const stats = [
+﻿const stats = [
   { value: '50K+', label: 'Active Users' },
-  { value: '2M+', label: 'Videos Created' },
+  { value: '2M+', label: 'Images Created' },
   { value: '150+', label: 'Countries' },
-  { value: '4.9★', label: 'Average Rating' },
+  { value: '4.9', label: 'Average Rating' },
 ]
 
 export default function StatsBar() {
@@ -18,7 +18,10 @@ export default function StatsBar() {
         }}>
           {stats.map((s, i) => (
             <div key={i}>
-              <div className="gradient-text" style={{ fontSize: 36, fontWeight: 900, lineHeight: 1 }}>{s.value}</div>
+              <div className="gradient-text" style={{ fontSize: 36, fontWeight: 900, lineHeight: 1 }}>
+                {s.value}
+                {s.label === 'Average Rating' && <span style={{ marginLeft: 4 }}>★</span>}
+              </div>
               <div style={{ color: '#6d6d8a', fontSize: 14, marginTop: 6 }}>{s.label}</div>
             </div>
           ))}
