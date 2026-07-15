@@ -1,7 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, CheckCircle } from 'lucide-react'
+
+// 🔑 PASTE YOUR NEWSLETTER FORMSPREE URL HERE!
+const NEWSLETTER_URL = 'https://formspree.io/f/xlgqdynl'
 
 const cols = {
   Product: [
@@ -27,9 +31,46 @@ const cols = {
 }
 
 export default function Footer() {
+  const [email, setEmail] = useState('')
+  const [subscribed, setSubscribed] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault()
+    if (!email) return
+    setLoading(true)
+
+    try {
+      const response = await fetch(NEWSLETTER_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          subject: 'New Newsletter Subscriber!',
+          message: `New subscriber: ${email}`,
+        }),
+      })
+
+      if (response.ok) {
+        setSubscribed(true)
+        setEmail('')
+        setTimeout(() => setSubscribed(false), 5000)
+      }
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <footer style={{ background: '#080810', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem' }}>
+
+        {/* Newsletter */}
         <div style={{
           padding: '3rem 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
           display: 'flex', flexWrap: 'wrap', gap: '1.5rem',
@@ -37,14 +78,45 @@ export default function Footer() {
         }}>
           <div>
             <h3 style={{ fontSize: 18, fontWeight: 700, color: 'white', marginBottom: 4 }}>Stay in the loop</h3>
-            <p style={{ color: '#6d6d8a', fontSize: 14 }}>Get AI video tips & updates.</p>
+            <p style={{ color: '#6d6d8a', fontSize: 14 }}>Get AI video tips & product updates.</p>
           </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <input type="email" placeholder="your@email.com" className="input-field" style={{ width: 260 }} />
-            <button className="btn-primary">Subscribe</button>
-          </div>
+          
+          {subscribed ? (
+            <div style={{ 
+              display: 'flex', alignItems: 'center', gap: 10, 
+              padding: '12px 20px', borderRadius: 12,
+              background: 'rgba(52,211,153,0.1)',
+              border: '1px solid rgba(52,211,153,0.3)',
+            }}>
+              <CheckCircle size={18} color="#34d399" />
+              <span style={{ color: '#34d399', fontSize: 14, fontWeight: 600 }}>
+                Subscribed! Check your email 📧
+              </span>
+            </div>
+          ) : (
+            <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: 8 }}>
+              <input 
+                type="email" 
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com" 
+                className="input-field" 
+                style={{ width: 260 }} 
+              />
+              <button 
+                type="submit" 
+                disabled={loading}
+                className="btn-primary" 
+                style={{ whiteSpace: 'nowrap', opacity: loading ? 0.7 : 1 }}
+              >
+                {loading ? 'Subscribing...' : 'Subscribe'}
+              </button>
+            </form>
+          )}
         </div>
 
+        {/* Links Grid */}
         <div style={{
           padding: '3rem 0', display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '2rem',
