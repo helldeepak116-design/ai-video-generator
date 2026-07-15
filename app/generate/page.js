@@ -96,7 +96,7 @@ export default function GeneratePage() {
     if (!videoUrl) return
     const link = document.createElement('a')
     link.href = videoUrl
-    link.download = `vidai-${Date.now()}.jpg`
+    link.download = `imgai-${Date.now()}.jpg`
     link.target = '_blank'
     document.body.appendChild(link)
     link.click()
