@@ -1,26 +1,155 @@
-'use client'
+﻿'use client'
 import { useState } from 'react'
 import VideoCard from '@/components/VideoCard'
 import CTASection from '@/components/CTASection'
 import SectionHeader from '@/components/SectionHeader'
 import { Filter } from 'lucide-react'
 
+// EASY TO EDIT: Change title and prompt for each video below!
 const ALL_VIDEOS = [
-  { title: 'Mountain Sunset', prompt: 'Cinematic timelapse over snow mountains', duration: '0:15', views: '12.4K', likes: '1200', style: 'Cinematic', category: 'Nature', videoUrl: 'https://cdn.pixabay.com/video/2022/12/18/143388-782506657_large.mp4', gradient: 'linear-gradient(135deg, #7c2d12, #1e0660)' },
-  { title: 'Cyberpunk City', prompt: 'Neon city at night with rain reflections', duration: '0:30', views: '28.7K', likes: '3400', style: 'Sci-Fi', category: 'Sci-Fi', videoUrl: 'https://cdn.pixabay.com/video/2023/10/03/183017-871881153_large.mp4', gradient: 'linear-gradient(135deg, #0f172a, #7c3aed)' },
-  { title: 'Ocean Waves', prompt: 'Peaceful ocean at golden hour sunrise', duration: '0:20', views: '8.9K', likes: '945', style: 'Realistic', category: 'Nature', videoUrl: 'https://cdn.pixabay.com/video/2024/03/19/204059-925128870_large.mp4', gradient: 'linear-gradient(135deg, #0c4a6e, #164e63)' },
-  { title: 'Forest Magic', prompt: 'Magical forest with fireflies and mist', duration: '0:25', views: '15.2K', likes: '2100', style: 'Fantasy', category: 'Fantasy', videoUrl: 'https://cdn.pixabay.com/video/2020/07/30/45960-446430388_large.mp4', gradient: 'linear-gradient(135deg, #14532d, #1e0660)' },
-  { title: 'Abstract Fluid', prompt: 'Colorful fluid dynamics simulation', duration: '0:10', views: '6.3K', likes: '780', style: 'Abstract', category: 'Abstract', videoUrl: 'https://cdn.pixabay.com/video/2020/02/22/32478-393867238_large.mp4', gradient: 'linear-gradient(135deg, #4c1d95, #0e7490)' },
-  { title: 'Product Showcase', prompt: 'Luxury product with cinematic lighting', duration: '0:15', views: '9.1K', likes: '1100', style: 'Commercial', category: 'Commercial', videoUrl: 'https://cdn.pixabay.com/video/2022/11/12/139303-771111926_large.mp4', gradient: 'linear-gradient(135deg, #1f2937, #374151)' },
-  { title: 'Space Nebula', prompt: 'Flying through colorful nebula in space', duration: '0:45', views: '34.6K', likes: '5200', style: 'Cinematic', category: 'Sci-Fi', videoUrl: 'https://cdn.pixabay.com/video/2023/08/13/175056-855564592_large.mp4', gradient: 'linear-gradient(135deg, #1e1b4b, #312e81)' },
-  { title: 'Cherry Blossom', prompt: 'Anime cherry blossoms in Japanese garden', duration: '0:12', views: '21.3K', likes: '4700', style: 'Anime', category: 'Anime', videoUrl: 'https://cdn.pixabay.com/video/2023/03/13/154164-807990093_large.mp4', gradient: 'linear-gradient(135deg, #701a75, #4c1d95)' },
-  { title: 'Coral Reef', prompt: 'Underwater reef with tropical fish', duration: '0:30', views: '11.8K', likes: '1500', style: 'Realistic', category: 'Nature', videoUrl: 'https://cdn.pixabay.com/video/2018/08/16/17756-286031863_large.mp4', gradient: 'linear-gradient(135deg, #0c4a6e, #064e3b)' },
-  { title: 'City Drone', prompt: 'Drone around skyscraper at sunset', duration: '0:18', views: '7.4K', likes: '890', style: 'Cinematic', category: 'Urban', videoUrl: 'https://cdn.pixabay.com/video/2019/03/21/22067-326024757_large.mp4', gradient: 'linear-gradient(135deg, #1c1917, #292524)' },
-  { title: 'Chocolate Pour', prompt: 'Slow motion chocolate over strawberries', duration: '0:10', views: '13.9K', likes: '2300', style: 'Commercial', category: 'Commercial', videoUrl: 'https://cdn.pixabay.com/video/2016/10/19/6027-188245334_large.mp4', gradient: 'linear-gradient(135deg, #431407, #7c2d12)' },
-  { title: 'Vintage Road Trip', prompt: 'Super 8 vintage desert road trip', duration: '0:40', views: '5.7K', likes: '720', style: 'Vintage', category: 'Vintage', videoUrl: 'https://cdn.pixabay.com/video/2020/09/08/48708-459653075_large.mp4', gradient: 'linear-gradient(135deg, #78350f, #92400e)' },
+  { 
+    id: 1,
+    title: 'Lemon Slicing Art', 
+    prompt: 'Overhead cinematography of fresh lemons being sliced on a wooden board', 
+    duration: '0:11', views: '124K', likes: '12000', 
+    style: 'Food', category: 'Commercial', 
+    videoUrl: 'https://www.pexels.com/download/video/11142458/',
+  },
+  { 
+    id: 2,
+    title: 'AI Generated Video', 
+    prompt: 'Creative visual content generated with AI', 
+    duration: '0:20', views: '287K', likes: '34000', 
+    style: 'Creative', category: 'Abstract', 
+    videoUrl: 'https://www.pexels.com/download/video/36864980/',
+  },
+  { 
+    id: 3,
+    title: 'Cinematic Shot', 
+    prompt: 'Beautiful cinematic footage with professional camera work', 
+    duration: '0:18', views: '89K', likes: '9450', 
+    style: 'Cinematic', category: 'Nature', 
+    videoUrl: 'https://www.pexels.com/download/video/6624892/',
+  },
+  { 
+    id: 4,
+    title: 'AI Video Sample', 
+    prompt: 'Sample video showcasing AI generation capabilities', 
+    duration: '0:22', views: '152K', likes: '21000', 
+    style: 'AI', category: 'Fantasy', 
+    videoUrl: 'https://www.pexels.com/download/video/38509905/',
+  },
+  { 
+    id: 5,
+    title: 'Creative Motion', 
+    prompt: 'Dynamic motion graphics with creative visual design', 
+    duration: '0:15', views: '63K', likes: '7800', 
+    style: 'Motion', category: 'Abstract', 
+    videoUrl: 'https://www.pexels.com/download/video/38472710/',
+  },
+  { 
+    id: 6,
+    title: 'Professional Video', 
+    prompt: 'High-quality professional video content', 
+    duration: '0:12', views: '91K', likes: '11000', 
+    style: 'Pro', category: 'Commercial', 
+    videoUrl: 'https://www.pexels.com/download/video/34209566/',
+  },
+  { 
+    id: 7,
+    title: 'Visual Storytelling', 
+    prompt: 'Compelling visual narrative told through video', 
+    duration: '0:25', views: '346K', likes: '52000', 
+    style: 'Story', category: 'Sci-Fi', 
+    videoUrl: 'https://www.pexels.com/download/video/38477364/',
+  },
+  { 
+    id: 8,
+    title: 'Artistic Vision', 
+    prompt: 'Artistic video expression with unique perspective', 
+    duration: '0:18', views: '213K', likes: '47000', 
+    style: 'Artistic', category: 'Anime', 
+    videoUrl: 'https://www.pexels.com/download/video/38361315/',
+  },
+  { 
+    id: 9,
+    title: 'Nature Footage', 
+    prompt: 'Beautiful natural footage capturing the environment', 
+    duration: '0:20', views: '118K', likes: '15000', 
+    style: 'Nature', category: 'Nature', 
+    videoUrl: 'https://www.pexels.com/download/video/37904648/',
+  },
+  { 
+    id: 10,
+    title: 'Modern Aesthetic', 
+    prompt: 'Contemporary video with modern visual style', 
+    duration: '0:15', views: '74K', likes: '8900', 
+    style: 'Modern', category: 'Urban', 
+    videoUrl: 'https://www.pexels.com/download/video/38436199/',
+  },
+  { 
+    id: 11,
+    title: 'Product Focus', 
+    prompt: 'Product-focused cinematography with detailed shots', 
+    duration: '0:15', views: '139K', likes: '23000', 
+    style: 'Product', category: 'Commercial', 
+    videoUrl: 'https://www.pexels.com/download/video/38203410/',
+  },
+  { 
+    id: 12,
+    title: 'Timeless Style', 
+    prompt: 'Classic video style with timeless appeal', 
+    duration: '0:20', views: '57K', likes: '7200', 
+    style: 'Classic', category: 'Vintage', 
+    videoUrl: 'https://www.pexels.com/download/video/16457006/',
+  },
+  { 
+    id: 13,
+    title: 'Aerial Perspective', 
+    prompt: 'Stunning perspective from above with sweeping motion', 
+    duration: '0:22', views: '198K', likes: '18500', 
+    style: 'Aerial', category: 'Nature', 
+    videoUrl: 'https://www.pexels.com/download/video/38135214/',
+  },
+  { 
+    id: 14,
+    title: 'Digital Dreams', 
+    prompt: 'Dream-like digital visuals with immersive quality', 
+    duration: '0:18', views: '156K', likes: '14200', 
+    style: 'Digital', category: 'Sci-Fi', 
+    videoUrl: 'https://www.pexels.com/download/video/37754907/',
+  },
+  { 
+    id: 15,
+    title: 'Motion Graphics', 
+    prompt: 'Dynamic motion graphics with abstract visual elements', 
+    duration: '0:15', views: '82K', likes: '9100', 
+    style: 'Motion', category: 'Abstract', 
+    videoUrl: 'https://www.pexels.com/download/video/38103690/',
+  },
+  { 
+    id: 16,
+    title: 'Urban Vibes', 
+    prompt: 'Urban city vibes captured with atmospheric cinematography', 
+    duration: '0:20', views: '105K', likes: '11500', 
+    style: 'Urban', category: 'Urban', 
+    videoUrl: 'https://www.pexels.com/download/video/35207577/',
+  },
 ]
 
 const CATEGORIES = ['All', 'Nature', 'Sci-Fi', 'Fantasy', 'Anime', 'Abstract', 'Commercial', 'Urban', 'Vintage']
+
+// Purple gradients for all cards
+const gradients = [
+  'linear-gradient(135deg, #7c2d12, #1e0660)',
+  'linear-gradient(135deg, #0f172a, #7c3aed)',
+  'linear-gradient(135deg, #0c4a6e, #164e63)',
+  'linear-gradient(135deg, #14532d, #1e0660)',
+  'linear-gradient(135deg, #4c1d95, #0e7490)',
+  'linear-gradient(135deg, #1f2937, #374151)',
+  'linear-gradient(135deg, #1e1b4b, #312e81)',
+  'linear-gradient(135deg, #701a75, #4c1d95)',
+]
 
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState('All')
@@ -29,7 +158,12 @@ export default function GalleryPage() {
   return (
     <div style={{ paddingTop: 80 }}>
       <section style={{ padding: '5rem 1.5rem 2rem' }}>
-        <SectionHeader badge="🎬 Real Videos - Hover to Preview!" title="Video" highlight="Gallery" subtitle="Hover to play • Click for fullscreen • Like with heart" />
+        <SectionHeader 
+          badge="Real Video Gallery" 
+          title="Video" 
+          highlight="Gallery" 
+          subtitle="Hover to preview - Click for fullscreen playback" 
+        />
       </section>
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem 2rem' }}>
@@ -47,9 +181,15 @@ export default function GalleryPage() {
       </div>
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem 5rem' }}>
-        <p style={{ color: '#47475d', fontSize: 13, marginBottom: 20 }}>Showing {filtered.length} videos - Hover to preview!</p>
+        <p style={{ color: '#47475d', fontSize: 13, marginBottom: 20 }}>Showing {filtered.length} videos - Hover any card to preview!</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.25rem' }}>
-          {filtered.map((v, i) => <VideoCard key={i} {...v} />)}
+          {filtered.map((v, i) => (
+            <VideoCard 
+              key={v.id} 
+              {...v} 
+              gradient={gradients[i % gradients.length]}
+            />
+          ))}
         </div>
       </div>
 

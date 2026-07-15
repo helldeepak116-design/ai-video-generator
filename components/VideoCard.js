@@ -1,28 +1,26 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef } from 'react'
 import { Play, Heart, Eye, Clock, X } from 'lucide-react'
 
 export default function VideoCard({ title, prompt, duration, views, likes, style: styleName, gradient, videoUrl }) {
-  const [isHovering, setIsHovering] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [liked, setLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(parseInt(likes) || 100)
+  const [isPlaying, setIsPlaying] = useState(false)
   const videoRef = useRef(null)
 
   const handleMouseEnter = () => {
-    setIsHovering(true)
     if (videoRef.current) {
       videoRef.current.currentTime = 0
-      videoRef.current.play().catch(() => {})
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {})
     }
   }
 
   const handleMouseLeave = () => {
-    setIsHovering(false)
     if (videoRef.current) {
       videoRef.current.pause()
-      videoRef.current.currentTime = 0
+      setIsPlaying(false)
     }
   }
 
@@ -35,7 +33,7 @@ export default function VideoCard({ title, prompt, duration, views, likes, style
   return (
     <>
       <div 
-        className="glass card-hover" 
+        className="glass card-hover"
         onClick={() => setModalOpen(true)}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -56,11 +54,12 @@ export default function VideoCard({ title, prompt, duration, views, likes, style
               muted
               loop
               playsInline
+              preload="metadata"
               style={{
                 position: 'absolute', inset: 0,
                 width: '100%', height: '100%',
                 objectFit: 'cover',
-                opacity: isHovering ? 1 : 0,
+                opacity: isPlaying ? 1 : 0,
                 transition: 'opacity 0.4s',
               }}
             />
@@ -68,42 +67,41 @@ export default function VideoCard({ title, prompt, duration, views, likes, style
 
           <div style={{
             position: 'absolute', inset: 0,
-            background: 'radial-gradient(circle at 30% 50%, rgba(109,59,255,0.3), transparent 60%)',
-            opacity: isHovering ? 0 : 1,
+            background: 'radial-gradient(circle at center, rgba(0,0,0,0.2), rgba(0,0,0,0.5))',
+            opacity: isPlaying ? 0 : 1,
             transition: 'opacity 0.4s',
           }} />
           
           <div style={{
             position: 'absolute', inset: 0, display: 'flex',
             alignItems: 'center', justifyContent: 'center',
-            opacity: isHovering ? 0 : 1,
+            opacity: isPlaying ? 0 : 1,
             transition: 'opacity 0.3s',
           }}>
             <div style={{
-              width: 52, height: 52, borderRadius: '50%',
-              background: 'rgba(255,255,255,0.15)',
-              border: '1px solid rgba(255,255,255,0.3)',
+              width: 56, height: 56, borderRadius: '50%',
+              background: 'rgba(109,59,255,0.9)',
+              boxShadow: '0 8px 24px rgba(109,59,255,0.4)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              backdropFilter: 'blur(10px)',
             }}>
-              <Play size={20} color="white" fill="white" style={{ marginLeft: 2 }} />
+              <Play size={22} color="white" fill="white" style={{ marginLeft: 3 }} />
             </div>
           </div>
 
           {styleName && (
             <div style={{
-              position: 'absolute', top: 10, left: 10, padding: '3px 10px',
+              position: 'absolute', top: 10, left: 10, padding: '4px 12px',
               borderRadius: 9999, fontSize: 11, fontWeight: 600,
-              background: 'rgba(109,59,255,0.7)', color: 'white',
-              zIndex: 2,
+              background: 'rgba(109,59,255,0.85)', color: 'white',
+              zIndex: 2, backdropFilter: 'blur(10px)',
             }}>
               {styleName}
             </div>
           )}
           <div style={{
-            position: 'absolute', bottom: 10, right: 10, padding: '3px 10px',
-            borderRadius: 9999, fontSize: 11, fontWeight: 600,
-            background: 'rgba(0,0,0,0.7)', color: 'white',
+            position: 'absolute', bottom: 10, right: 10, padding: '4px 10px',
+            borderRadius: 6, fontSize: 11, fontWeight: 600,
+            background: 'rgba(0,0,0,0.8)', color: 'white',
             display: 'flex', alignItems: 'center', gap: 4,
             zIndex: 2,
           }}>
@@ -140,7 +138,7 @@ export default function VideoCard({ title, prompt, duration, views, likes, style
           onClick={() => setModalOpen(false)}
           style={{
             position: 'fixed', inset: 0, zIndex: 1000,
-            background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(10px)',
+            background: 'rgba(0,0,0,0.95)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             padding: '2rem', cursor: 'pointer',
           }}
@@ -152,20 +150,34 @@ export default function VideoCard({ title, prompt, duration, views, likes, style
               width: 44, height: 44, borderRadius: '50%',
               background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'white', cursor: 'pointer',
+              color: 'white', cursor: 'pointer', zIndex: 10,
             }}
           >
             <X size={20} />
           </button>
-          <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: '90vw', width: '100%', cursor: 'default' }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', width: '100%', cursor: 'default' }}>
             {videoUrl ? (
-              <video src={videoUrl} controls autoPlay loop style={{ width: '100%', maxHeight: '80vh', borderRadius: 16 }} />
+              <video 
+                src={videoUrl} 
+                controls 
+                autoPlay 
+                loop 
+                playsInline
+                style={{ width: '100%', maxHeight: '75vh', borderRadius: 16, background: '#000' }} 
+              />
             ) : (
               <div style={{ aspectRatio: '16/9', background: gradient, borderRadius: 16 }} />
             )}
-            <div className="glass" style={{ padding: '1.25rem', borderRadius: 16, marginTop: 20 }}>
-              <h2 style={{ color: 'white', fontSize: 20, fontWeight: 700 }}>{title}</h2>
-              <p style={{ color: '#b4b4c5', fontSize: 14, marginTop: 8 }}>{prompt}</p>
+            <div className="glass" style={{ padding: '1.25rem 1.5rem', borderRadius: 16, marginTop: 20 }}>
+              <h2 style={{ color: 'white', fontSize: 20, fontWeight: 700, marginBottom: 8 }}>{title}</h2>
+              <p style={{ color: '#b4b4c5', fontSize: 14, marginBottom: 12 }}>
+                <strong style={{ color: '#9d9dff' }}>AI Prompt:</strong> {prompt}
+              </p>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+                <span style={{ padding: '4px 12px', borderRadius: 9999, fontSize: 12, background: 'rgba(109,59,255,0.2)', color: '#c4c4ff' }}>{styleName}</span>
+                <span style={{ color: '#6d6d8a', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }}><Clock size={13} /> {duration}</span>
+                <span style={{ color: '#6d6d8a', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }}><Eye size={13} /> {views}</span>
+              </div>
             </div>
           </div>
         </div>
